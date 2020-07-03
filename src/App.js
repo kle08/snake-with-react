@@ -21,6 +21,7 @@ const initialState = {
 class App extends Component {
 
   state = initialState;
+
   componentDidMount() {
     setInterval(this.moveSnake, this.state.speed)
     document.onkeydown = this.onKeyDown;
@@ -30,7 +31,6 @@ class App extends Component {
     this.checkIfHitItself();
     this.checkIfEat();
   }
-
 
   onKeyDown = (e) => {
     e = e || window.event;
@@ -70,12 +70,14 @@ class App extends Component {
         head = [head[0], head[1] - 2];
         break;
     }
+
     dots.push(head);
     dots.shift();
     this.setState({
       snakeDots: dots
     })
   }
+
   checkOutBoarders() {
     const { snakeDots } = this.state
     let head = snakeDots[snakeDots.length - 1];
@@ -83,25 +85,28 @@ class App extends Component {
       this.gameOver();
     }
   }
+
   checkIfHitItself() {
     let snake = [...this.state.snakeDots];
     let head = snake[snake.length - 1];
     snake.pop();
     snake.forEach(dot => {
-      if (head[0] == dot[0] && head[1] == dot[1]) {
+      if (head[0] === dot[0] && head[1] === dot[1]) {
         this.gameOver();
       }
     })
   }
+
   gameOver() {
     alert(`Game Over. The length of the Snake is ${this.state.snakeDots.length}`)
     this.setState(initialState)
   }
+
   checkIfEat() {
-    const { snakeDots } = this.state
+    const { snakeDots, food } = this.state
     let head = snakeDots[snakeDots.length - 1];
-    let food = this.state.food;
-    if (head[0] === food[0] && head[1] === food[1]) {
+    let apple = food;
+    if (head[0] === apple[0] && head[1] === apple[1]) {
       this.setState({
         food: randomCoordinates()
       })
@@ -119,9 +124,10 @@ class App extends Component {
   }
 
   increaseSpeed() {
-    if (this.state.speed > 10) {
+    const { speed } = this.state
+    if (speed > 10) {
       this.setState({
-        speed: this.state.speed - 10
+        speed: speed - 10
       })
     }
   }
